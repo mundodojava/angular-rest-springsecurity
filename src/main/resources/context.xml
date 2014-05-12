@@ -14,7 +14,30 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
+	<!-- INIT REST COMPONENTS -->
+	<context:component-scan base-package="net.dontdrinkandroot.example.angularrestspringsecurity.rest.resources" />
+
 	<context:annotation-config />
+
+	<!-- Swagger providers -->
+   <!--  <bean id="apiDeclarationProvider" class="com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider" />
+    <bean id="resourceListingProvider" class="com.wordnik.swagger.jaxrs.listing.ResourceListingProvider" /> -->
+
+    <!-- Swagger API listing resource -->
+   <!--  <bean id="swaggerResourceJSON" class="com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON" />	 -->
+    
+    	<!-- this scans the classes for resources -->
+<!-- 	   <bean id="swaggerConfig" class="com.wordnik.swagger.jaxrs.config.BeanConfig">
+	     <property name="resourcePackage" value="net.dontdrinkandroot.example.angularrestspringsecurity.rest.resources"/>
+	     <property name="version" value="1.0.0"/>
+	     <property name="basePath" value="http://localhost:8080/angular-rest-springsecurity"/>
+	     <property name="title" value="Petstore sample app"/>
+	     <property name="description" value="This is a app."/>
+	     <property name="contact" value="apiteam@wordnik.com"/>
+	     <property name="license" value="Apache 2.0 License"/>
+	     <property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+	     <property name="scan" value="true"/>
+	   </bean> -->
 
 	<!--
 		DATABASE SETUP 
@@ -57,17 +80,9 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<!--
-		INIT REST COMPONENTS 
-	 -->
-	
-	<context:component-scan base-package="net.dontdrinkandroot.example.angularrestspringsecurity.rest.resources" />
-	
 	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
-	
-	<!-- 
-		SPRING SECURITY SETUP
-	-->
+
+	<!-- SPRING SECURITY SETUP -->
 	
 	<bean id="passwordEncoder" class="net.dontdrinkandroot.example.angularrestspringsecurity.security.SaltedSHA256PasswordEncoder">
 		<constructor-arg value="secret" />
@@ -82,16 +97,16 @@
 	<security:http
 			realm="Protected API"
 			use-expressions="true"
-			auto-config="false"
+			auto-config="false" 
 			create-session="stateless"
 			entry-point-ref="unauthorizedEntryPoint"
 			authentication-manager-ref="authenticationManager">
 		<security:custom-filter ref="authenticationTokenProcessingFilter" position="FORM_LOGIN_FILTER" />
-		<security:intercept-url pattern="/rest/user/authenticate" access="permitAll" />
-		<security:intercept-url method="GET" pattern="/rest/news/**" access="hasRole('user')" />
-		<security:intercept-url method="PUT" pattern="/rest/news/**" access="hasRole('admin')" />
-		<security:intercept-url method="POST" pattern="/rest/news/**" access="hasRole('admin')" />
-		<security:intercept-url method="DELETE" pattern="/rest/news/**" access="hasRole('admin')" />
+		<security:intercept-url pattern="/rest/user/authenticate" access="permitAll" requires-channel="https" />
+		<security:intercept-url method="GET" pattern="/rest/news/**" access="hasRole('user')" requires-channel="https" />
+		<security:intercept-url method="PUT" pattern="/rest/news/**" access="hasRole('admin')" requires-channel="https" />
+		<security:intercept-url method="POST" pattern="/rest/news/**" access="hasRole('admin')" requires-channel="https" />
+		<security:intercept-url method="DELETE" pattern="/rest/news/**" access="hasRole('admin')" requires-channel="https" />
 	</security:http>
 
 	<bean id="unauthorizedEntryPoint" class="net.dontdrinkandroot.example.angularrestspringsecurity.rest.UnauthorizedEntryPoint" />

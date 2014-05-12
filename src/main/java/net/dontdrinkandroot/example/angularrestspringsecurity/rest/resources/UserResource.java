@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Path("/user")
+//@Api(value="/person",description="person api")
 public class UserResource {
 
 	@Autowired

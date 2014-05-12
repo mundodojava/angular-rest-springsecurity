@@ -14,4 +14,15 @@
 	<h4>{{newsEntry.date | date}}</h4>
 	<p>{{newsEntry.content}}</p>
 </div>
+
+	<form>
+		<button type="submit" onclick="reload()">Click me to refresh</button>
+	</form>
+	
+	<script>
+		function reload() {
+			location.reload(false);
+		}
+	</script>
+	
 <hr />

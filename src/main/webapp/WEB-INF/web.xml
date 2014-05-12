@@ -5,19 +5,39 @@
 	id="WebApp_ID" version="2.5">
 	
 	<display-name>angular-rest-springsecurity</display-name>
-	
-	<!--
-		Load Spring Context 
-	 -->
+
+	<!-- <listener>
+		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+	</listener> -->
+
+	<!-- Load Spring Context -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			classpath:/context.xml
-		</param-value>
+		<param-value>classpath:/context.xml</param-value>
 	</context-param>
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
+
+<!-- 	<servlet>
+		<servlet-name>resteasy-servlet</servlet-name>
+		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>resteasy-servlet</servlet-name>
+		<url-pattern>/rest/**</url-pattern>
+		<url-pattern>/api-docs/**</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>MyCustomBootstrap</servlet-name>
+		<servlet-class>net.dontdrinkandroot.example.angularrestspringsecurity.swagger.MyCustomBootstrap</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet> -->
+	
 	
 	<!--
 		Map the REST Servlet to /rest/ 
@@ -39,6 +59,16 @@
 		<servlet-name>RestService</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
+	
+	<security-constraint>
+	    <web-resource-collection>
+	        <web-resource-name>angular-rest-springsecurity</web-resource-name>
+	        <url-pattern>/*</url-pattern>
+	    </web-resource-collection>
+	    <user-data-constraint>
+	        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+	    </user-data-constraint>
+	</security-constraint>
 	
 	<!--
 		Apply Spring Security Filter to all Requests 
